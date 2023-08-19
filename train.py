@@ -3,17 +3,16 @@ import torchvision
 from torch.utils import data
 from torchvision import transforms
 from torch import nn as nn
-from model import Lenet
+
 import pandas as pd
 import time
 import multiprocessing
 import os 
 
-# Train network on single gpu or cpu
-def try_gpu(i=0): 
-    if torch.cuda.device_count() >= i + 1:
-        return torch.device(f'cuda:{i}')
-    return torch.device('cpu')
+from model import Lenet
+from utils.seed import set_seed
+from utils.device import get_device
+
 
 # Load data and do data transformation
 def load_data(batch_size):
@@ -35,7 +34,7 @@ best_acc, save_path = 0.0, "best.pth"
 # Prepare all parts: network, device, data iterator, network initialization, optimizer, loss function
 net = Lenet()
 net_name = os.getcwd().split("/")[-1]
-device = try_gpu()
+device = get_device()
 train_iter, test_iter, num_train, num_test = load_data(batch_size)
 def init_weights(m):
     if type(m) == nn.Linear or type(m) == nn.Conv2d:
@@ -45,10 +44,10 @@ net.to(device)
 optimizer = torch.optim.SGD(net.parameters(), lr=lr)
 loss = nn.CrossEntropyLoss()
 
-# Create empty dataframe to record the training record
-# if not os.path.exists(net_name+".csv"):
-#     df = pd.DataFrame(columns=["Network", "Parameter", "Dataset", "Epoch", "Device", "Time cost(sec)", "Batch size", "Lr","Best test acc"])
-# df = pd.read_csv(os.getcwd()+"/"+net_name+".csv")
+# set seed
+set_seed(0)
+# loss will be same for unshuffled dataset
+
 
 # Train
 print("Train {} on {}".format(net_name, device))
