@@ -1,0 +1,8 @@
+# python bytecode
+__pycache__/
+
+# trained model
+best.pth
+
+# dataset folder
+data/
