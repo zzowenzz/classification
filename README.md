@@ -2,3 +2,4 @@
 2. [x] torchinfo to save architecture
 3. [x] create seed function
 4. [x] create device function 
+5. [x] create dataloader and data transform function

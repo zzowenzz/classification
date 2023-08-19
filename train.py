@@ -12,20 +12,8 @@ import os
 from model import Lenet
 from utils.seed import set_seed
 from utils.device import get_device
+from utils.dataloader import get_dataloader
 
-
-# Load data and do data transformation
-def load_data(batch_size):
-    trans = {
-        "train": transforms.Compose([transforms.ToTensor()]),
-        "test": transforms.Compose([transforms.ToTensor()])
-    }
-    train = torchvision.datasets.FashionMNIST(root="./data", train=True, transform=trans["train"], download=True)
-    test = torchvision.datasets.FashionMNIST(root="./data", train=False, transform=trans["test"], download=True)
-    return (data.DataLoader(train, batch_size, shuffle=True, num_workers=multiprocessing.cpu_count()),
-            data.DataLoader(test, batch_size, shuffle=False,num_workers=multiprocessing.cpu_count()), 
-            len(train), 
-            len(test))
 # Hyper-parameter: batch_size, lr, num_epochs
 batch_size = 256
 lr, num_epochs = 0.1, 10
@@ -35,7 +23,7 @@ best_acc, save_path = 0.0, "best.pth"
 net = Lenet()
 net_name = os.getcwd().split("/")[-1]
 device = get_device()
-train_iter, test_iter, num_train, num_test = load_data(batch_size)
+train_iter, test_iter, num_train, num_test = get_dataloader(batch_size)
 def init_weights(m):
     if type(m) == nn.Linear or type(m) == nn.Conv2d:
         nn.init.xavier_uniform_(m.weight)
