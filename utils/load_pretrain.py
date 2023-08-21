@@ -1,4 +1,5 @@
 import torch
+import logging
 
 def load_pretrain(net, path):
     pretrained_state_dict = torch.load(path)
@@ -9,7 +10,8 @@ def load_pretrain(net, path):
     # Check if the keys match in order and presence
     if net_keys == pretrained_keys:
         net.load_state_dict(pretrained_state_dict)
-        print("Successfully loaded pretrained weights!")
+        # print("Successfully loaded pretrained weights!")
+        logging.info("Successfully loaded pretrained weights!") 
     else:
         # Find the first mismatched layer for better error reporting
         mismatched_layer = None
@@ -19,6 +21,8 @@ def load_pretrain(net, path):
                 break
         
         if mismatched_layer:
-            print(f"Mismatched layers: net has {mismatched_layer[0]} but pretrained has {mismatched_layer[1]}")
+            # print(f"Mismatched layers: net has {mismatched_layer[0]} but pretrained has {mismatched_layer[1]}")
+            logging.info(f"Mismatched layers: net has {mismatched_layer[0]} but pretrained has {mismatched_layer[1]}")
         
-        raise ValueError("Network architecture does not match pretrained weights!")
+        # raise ValueError("Network architecture does not match pretrained weights!")
+        logging.info("Network architecture does not match pretrained weights!")

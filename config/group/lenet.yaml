@@ -1,0 +1,8 @@
+TRAIN:
+    BATCH_SIZE: 256
+    LR: 0.1
+    EPOCHS: 10
+    SNAPSHOT_BEST: "best.pth"
+
+BACKBONE:
+    NAME: "LeNet"

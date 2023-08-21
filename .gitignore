@@ -6,3 +6,6 @@ best.pth
 
 # dataset folder
 data/
+
+# log folder
+log/
