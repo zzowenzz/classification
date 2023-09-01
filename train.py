@@ -62,7 +62,7 @@ logging.info("{} images for training, {} images for validation\n".format(num_tra
 total_time = 0.0
 for epoch in range(cfg.TRAIN.EPOCHS):
     batch_time = time.time()
-    train_loss, train_acc, test_acc = 0.0, 0.0, 0.0
+    train_loss, train_acc, test_acc, best_acc = 0.0, 0.0, 0.0, 0.0
     net.train()
     # For each batch 
     for i, (x, y) in enumerate(train_iter):
