@@ -18,4 +18,4 @@ cfg.TRAIN.SNAPSHOT_BEST = ""
 # ------------------------------------------------------------------------ #
 cfg.BACKBONE = CN()
 cfg.BACKBONE.NAME = ''
-cfg.BACKBONE.PRETRAINED = './best.pth'
+cfg.BACKBONE.PRETRAINED = ''
