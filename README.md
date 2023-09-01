@@ -10,4 +10,5 @@
 10. [x] move every setting to cfg
 11. [ ] build different warm up scheduler
 12. [ ] use __main__ to run the code
-13. [ ] use keep main() and train() in train.py
+13. [x] use keep main() and train() in train.py
+14. [x] log to console and file 
