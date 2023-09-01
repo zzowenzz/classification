@@ -7,5 +7,7 @@
 7. [x] load pretrain weight
 8. [x] check pretrain weight loading and claim in loggin
 9. [x] load default cfg and use customied yaml files to overwrite the default
-10.[x] move every setting to cfg
-11.[ ] build different warm up scheduler
+10. [x] move every setting to cfg
+11. [ ] build different warm up scheduler
+12. [ ] use __main__ to run the code
+13. [ ] use keep main() and train() in train.py
