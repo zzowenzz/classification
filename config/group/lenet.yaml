@@ -1,8 +1,9 @@
 TRAIN:
-    BATCH_SIZE: 256
+    BATCH_SIZE: 512
     LR: 0.1
     EPOCHS: 10
     SNAPSHOT_BEST: "best.pth"
+    NUM_GPU: 2
 
 BACKBONE:
     NAME: "LeNet"

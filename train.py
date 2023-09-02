@@ -31,7 +31,7 @@ def train(train_iter, test_iter, num_train, num_test,  net, loss, optimizer, dev
         # For each batch 
         for i, (x, y) in enumerate(train_iter):
             optimizer.zero_grad()
-            x, y = x.to(device), y.to(device)
+            x, y = x.to(device[0]), y.to(device[0])
             y_hat = net(x)
             l = loss(y_hat, y)
             l.backward()
@@ -46,8 +46,8 @@ def train(train_iter, test_iter, num_train, num_test,  net, loss, optimizer, dev
         with torch.no_grad():
             # For each batch
             for X, y in test_iter:
-                X = X.to(device)
-                y = y.to(device)
+                X = X.to(device[0])
+                y = y.to(device[0])
                 test_acc += (net(X).argmax(axis=1) == y).sum().item()
         test_acc /= num_test
         if test_acc > best_acc:
@@ -61,10 +61,13 @@ def train(train_iter, test_iter, num_train, num_test,  net, loss, optimizer, dev
 
 def main(args):
     # set environment
-    device = get_device()
+    device = get_device(num_gpu=2)
+    print(device)
 
     # create logger
     current_time = datetime.datetime.now().strftime('%m_%d_%H_%M')
+    if not os.path.exists("./log"):
+        os.mkdir("./log")
     log_filename = f'./log/{current_time}.log'
     logging.basicConfig(filename=log_filename, level=logging.INFO,
                         format='%(asctime)s - %(levelname)s - %(message)s')
@@ -84,9 +87,9 @@ def main(args):
         if type(m) == nn.Linear or type(m) == nn.Conv2d:
             nn.init.xavier_uniform_(m.weight)
     net.apply(init_weights)
-    net.to(device)
-
-    
+    net.to(device[0]) # move to device then wrap model with nn.DataParallel
+    # to() expects a torch.device object or a string representation 
+    net = nn.DataParallel(net, device_ids=device)
 
     # load pretrain model
     pretrain = cfg.BACKBONE.PRETRAINED
