@@ -9,3 +9,6 @@ data/
 
 # log folder
 log/*
+
+# trial notebook
+try.ipynb

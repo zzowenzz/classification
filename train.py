@@ -71,6 +71,7 @@ def main(args):
     log_filename = f'./log/{current_time}.log'
     logging.basicConfig(filename=log_filename, level=logging.INFO,
                         format='%(asctime)s - %(levelname)s - %(message)s')
+    
     # Create a console handler
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
@@ -92,9 +93,8 @@ def main(args):
     net = nn.DataParallel(net, device_ids=device)
 
     # load pretrain model
-    pretrain = cfg.BACKBONE.PRETRAINED
-    if pretrain:
-        load_pretrain(net, pretrain)
+    if cfg.BACKBONE.PRETRAINED:
+        load_pretrain(net, cfg.BACKBONE.PRETRAINED)
 
     # create training recorder
 
