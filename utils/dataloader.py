@@ -30,6 +30,4 @@ def get_dataloader(batch_size):
     train = torchvision.datasets.FashionMNIST(root="./data", train=True, transform=trans["train"], download=True)
     test = torchvision.datasets.FashionMNIST(root="./data", train=False, transform=trans["test"], download=True)
     return (data.DataLoader(train, batch_size, shuffle=True, num_workers=multiprocessing.cpu_count()),
-            data.DataLoader(test, batch_size, shuffle=False,num_workers=multiprocessing.cpu_count()), 
-            len(train), 
-            len(test))
+            data.DataLoader(test, batch_size, shuffle=False,num_workers=multiprocessing.cpu_count()))

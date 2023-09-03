@@ -20,7 +20,7 @@ from utils.load_pretrain import load_pretrain
 from config.default import cfg
 
 
-def train(train_iter, test_iter, num_train, num_test,  net, loss, optimizer, device):
+def train(train_iter, test_iter, net, loss, optimizer, device):
     # Train
     logging.info("{} images for training, {} images for validation\n".format(num_train,num_test))
     total_time = 0.0
@@ -29,18 +29,17 @@ def train(train_iter, test_iter, num_train, num_test,  net, loss, optimizer, dev
         train_loss, train_acc, test_acc, best_acc = 0.0, 0.0, 0.0, 0.0
         net.train()
         # For each batch 
-        for i, (x, y) in enumerate(train_iter):
+        for i, (X, y) in enumerate(train_iter):
             optimizer.zero_grad()
-            x, y = x.to(device[0]), y.to(device[0])
-            y_hat = net(x)
+            X, y = X.to(device[0]), y.to(device[0])
+            y_hat = net(X)
             l = loss(y_hat, y)
             l.backward()
             optimizer.step()
-        
             with torch.no_grad():
                 train_loss += l/cfg.TRAIN.BATCH_SIZE
                 train_acc += (y_hat.argmax(axis=1) == y).sum().item()
-        train_acc /= num_train
+                train_acc /= X.shape[0]
 
         net.eval()
         with torch.no_grad():
@@ -49,7 +48,7 @@ def train(train_iter, test_iter, num_train, num_test,  net, loss, optimizer, dev
                 X = X.to(device[0])
                 y = y.to(device[0])
                 test_acc += (net(X).argmax(axis=1) == y).sum().item()
-        test_acc /= num_test
+                test_acc /= X.shape[0]
         if test_acc > best_acc:
             best_acc = test_acc
             torch.save(net.state_dict(), cfg.TRAIN.SNAPSHOT_BEST)
@@ -99,14 +98,14 @@ def main(args):
     # create training recorder
 
     # build dataloader
-    train_iter, test_iter, num_train, num_test = get_dataloader(cfg.TRAIN.BATCH_SIZE)
+    train_iter, test_iter = get_dataloader(cfg.TRAIN.BATCH_SIZE)
     
     # create loss and optimizer
     loss = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=cfg.TRAIN.LR)
 
     # start training
-    train(train_iter, test_iter, num_train, num_test, net, loss, optimizer, device)
+    train(train_iter, test_iter, net, loss, optimizer, device)
 
 if __name__ == '__main__':
     # set seed to reproduce result
