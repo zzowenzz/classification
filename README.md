@@ -12,3 +12,4 @@
 12. [ ] use __main__ to run the code
 13. [x] use keep main() and train() in train.py
 14. [x] log to console and file 
+15. [x] train in DataParallel

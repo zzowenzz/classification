@@ -61,7 +61,6 @@ def train(train_iter, test_iter, net, loss, optimizer, device):
 def main(args):
     # set environment
     device = get_device(num_gpu=2)
-    print(device)
 
     # create logger
     current_time = datetime.datetime.now().strftime('%m_%d_%H_%M')
@@ -70,8 +69,6 @@ def main(args):
     log_filename = f'./log/{current_time}.log'
     logging.basicConfig(filename=log_filename, level=logging.INFO,
                         format='%(asctime)s - %(levelname)s - %(message)s')
-    
-    # Create a console handler
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
     root_logger = logging.getLogger()
