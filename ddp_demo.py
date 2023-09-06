@@ -51,5 +51,7 @@ if __name__=="__main__":
     # The MASTER_ADDR and MASTER_PORT is a common meeting point for all these processes 
     # to synchronize and establish communication.
     os.environ["MASTER_ADDR"] = "localhost" # network address of the master process; set to localhost for single machine multi gpu
-    os.environ["MASTER_PORT"] = "29500" # master port where the processes rendezvous(meet)
+    os.environ["MASTER_PORT"] = "29500" # master port where the processes rendezvous(meet; 
+    # rendezvous is for an initial synchronization step where all processes discover each other 
+    # and agree on how to communicate
     main()

@@ -3,6 +3,8 @@ import torchvision
 from torch.utils import data
 from torchvision import transforms
 from torch import nn as nn
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
 
 import pandas as pd
 import time
@@ -19,10 +21,22 @@ from utils.dataloader import get_dataloader
 from utils.load_pretrain import load_pretrain
 from config.default import cfg
 
+def set_dist(net):
+    # init
+    dist.init_process_group("nccl")
+    rank = dist.get_rank() # get the currect rank inside the dist process group; default is 0
+    device_id = rank % torch.cuda.device_count()
+
+    # wrap the model with DDP
+    net = net.to(device_id)
+    net = DDP(net, device_ids=[device_id])
+    return net, device_id
+
+def cleanup():
+    dist.destroy_process_group()
 
 def train(train_iter, test_iter, net, loss, optimizer, device):
     # Train
-    logging.info("{} images for training, {} images for validation\n".format(num_train,num_test))
     total_time = 0.0
     for epoch in range(cfg.TRAIN.EPOCHS):
         batch_time = time.time()
@@ -31,7 +45,7 @@ def train(train_iter, test_iter, net, loss, optimizer, device):
         # For each batch 
         for i, (X, y) in enumerate(train_iter):
             optimizer.zero_grad()
-            X, y = X.to(device[0]), y.to(device[0])
+            X, y = X.to(device), y.to(device)
             y_hat = net(X)
             l = loss(y_hat, y)
             l.backward()
@@ -45,8 +59,8 @@ def train(train_iter, test_iter, net, loss, optimizer, device):
         with torch.no_grad():
             # For each batch
             for X, y in test_iter:
-                X = X.to(device[0])
-                y = y.to(device[0])
+                X = X.to(device)
+                y = y.to(device)
                 test_acc += (net(X).argmax(axis=1) == y).sum().item()
                 test_acc /= X.shape[0]
         if test_acc > best_acc:
@@ -60,7 +74,7 @@ def train(train_iter, test_iter, net, loss, optimizer, device):
 
 def main(args):
     # set environment
-    device = get_device(num_gpu=2)
+    # device = get_device(num_gpu=2)
 
     # create logger
     current_time = datetime.datetime.now().strftime('%m_%d_%H_%M')
@@ -84,9 +98,8 @@ def main(args):
         if type(m) == nn.Linear or type(m) == nn.Conv2d:
             nn.init.xavier_uniform_(m.weight)
     net.apply(init_weights)
-    net.to(device[0]) # move to device then wrap model with nn.DataParallel
-    # to() expects a torch.device object or a string representation 
-    net = nn.DataParallel(net, device_ids=device)
+    # set dist training
+    net, device = set_dist(net)
 
     # load pretrain model
     if cfg.BACKBONE.PRETRAINED:
@@ -114,4 +127,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     main(args)
+    cleanup() # clean up for dist training
 
