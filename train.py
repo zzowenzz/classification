@@ -23,7 +23,7 @@ from config.default import cfg
 
 def set_dist(net):
     # init
-    dist.init_process_group("nccl")
+    dist.init_process_group("nccl", init_method='env://')
     rank = dist.get_rank() # get the currect rank inside the dist process group; default is 0
     device_id = rank % torch.cuda.device_count()
 
@@ -35,10 +35,11 @@ def set_dist(net):
 def cleanup():
     dist.destroy_process_group()
 
-def train(train_iter, test_iter, net, loss, optimizer, device):
+def train(train_iter, test_iter, train_sampler, net, loss, optimizer, device):
     # Train
     total_time = 0.0
     for epoch in range(cfg.TRAIN.EPOCHS):
+        train_sampler.set_epoch(epoch) # set the epoch for the sampler for different shuffling in each epoch
         batch_time = time.time()
         train_loss, train_acc, test_acc, best_acc = 0.0, 0.0, 0.0, 0.0
         net.train()
@@ -108,14 +109,14 @@ def main(args):
     # create training recorder
 
     # build dataloader
-    train_iter, test_iter = get_dataloader(cfg.TRAIN.BATCH_SIZE)
+    train_iter, test_iter, train_sampler = get_dataloader(cfg.TRAIN.BATCH_SIZE)
     
     # create loss and optimizer
     loss = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=cfg.TRAIN.LR)
 
     # start training
-    train(train_iter, test_iter, net, loss, optimizer, device)
+    train(train_iter, test_iter, train_sampler, net, loss, optimizer, device)
 
 if __name__ == '__main__':
     # set seed to reproduce result

@@ -1,6 +1,7 @@
 import torchvision
 from torchvision import transforms
 from torch.utils import data
+from torch.utils.data.distributed import DistributedSampler
 
 import multiprocessing
 
@@ -28,6 +29,8 @@ def get_dataloader(batch_size):
         "test": get_transforms(),
     }
     train = torchvision.datasets.FashionMNIST(root="./data", train=True, transform=trans["train"], download=True)
+    train_sampler = DistributedSampler(train)# wrap train dataset with DistributedSampler
     test = torchvision.datasets.FashionMNIST(root="./data", train=False, transform=trans["test"], download=True)
-    return (data.DataLoader(train, batch_size, shuffle=True, num_workers=multiprocessing.cpu_count()),
-            data.DataLoader(test, batch_size, shuffle=False,num_workers=multiprocessing.cpu_count()))
+    return (data.DataLoader(train, batch_size, shuffle=True, num_workers=multiprocessing.cpu_count(), sampler=train_sampler),
+            data.DataLoader(test, batch_size, shuffle=False,num_workers=multiprocessing.cpu_count()),
+            train_sampler) # return train_sampler for differently shuffling in each epoch
