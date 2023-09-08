@@ -23,7 +23,7 @@ from config.default import cfg
 
 def set_dist(net):
     # init
-    dist.init_process_group("nccl")
+    dist.init_process_group("nccl", init_method='env://')
     rank = dist.get_rank() # get the currect rank inside the dist process group; default is 0
     device_id = rank % torch.cuda.device_count()
 

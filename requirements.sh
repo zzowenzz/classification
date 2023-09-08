@@ -1,4 +1,3 @@
-conda create -n owen python=3.8
 
 conda install pytorch torchvision pytorch-cuda=11.8 -c pytorch -c nvidia
 
