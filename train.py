@@ -79,9 +79,9 @@ def main(args):
 
     # create logger
     current_time = datetime.datetime.now().strftime('%m_%d_%H_%M')
-    if not os.path.exists("./log"):
-        os.mkdir("./log")
-    log_filename = f'./log/{current_time}.log'
+    if not os.path.exists("./log/"+current_time):
+        os.makedirs("./log/"+current_time)
+    log_filename = f'./log/{current_time}/{current_time}.log'
     logging.basicConfig(filename=log_filename, level=logging.INFO,
                         format='%(asctime)s - %(levelname)s - %(message)s')
     console_handler = logging.StreamHandler()
