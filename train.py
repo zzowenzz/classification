@@ -70,7 +70,7 @@ def train(train_iter, test_iter, train_sampler, net, loss, optimizer, device):
         time_end = time.time()
         total_time += (time_end - batch_time)
         log_from_gpu("Epoch {}, train_loss {}, train_acc {}, best_acc {}, test_acc {}, time cost {} sec".format(epoch+1, "%.4f" % train_loss, "%.2f" % train_acc, "%.2f" %best_acc, "%.2f" %test_acc,  "%.2f" %(time_end - batch_time)))
-        wandb.log({"train_loss": train_loss, "train_acc": train_acc, "best_acc": best_acc, "test_acc": test_acc, "time_cost": time_end - batch_time})
+        wandb.log({"train_loss": train_loss, "train_acc": train_acc, "best_acc": best_acc, "test_acc": test_acc, "time_cost": time_end - batch_time}) if args.wandb else None
 
     log_from_gpu("\nFinish training")
 
