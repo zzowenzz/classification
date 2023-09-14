@@ -13,6 +13,7 @@ import os
 import logging
 import datetime
 import argparse
+import wandb
 
 from model import Lenet
 from utils.seed import set_seed
@@ -70,6 +71,7 @@ def train(train_iter, test_iter, train_sampler, net, loss, optimizer, device):
         time_end = time.time()
         total_time += (time_end - batch_time)
         logging.info("Epoch {}, train_loss {}, train_acc {}, best_acc {}, test_acc {}, time cost {} sec".format(epoch+1, "%.4f" % train_loss, "%.2f" % train_acc, "%.2f" %best_acc, "%.2f" %test_acc,  "%.2f" %(time_end - batch_time)))
+        wandb.log({"train_loss": train_loss, "train_acc": train_acc, "best_acc": best_acc, "test_acc": test_acc, "time_cost": time_end - batch_time})
 
     logging.info("\nFinish training")
 
@@ -107,6 +109,7 @@ def main(args):
         load_pretrain(net, cfg.BACKBONE.PRETRAINED)
 
     # create training recorder
+    wandb.init(project="classification", name=f"{current_time}")
 
     # build dataloader
     train_iter, test_iter, train_sampler = get_dataloader(cfg.TRAIN.BATCH_SIZE)
@@ -125,6 +128,7 @@ if __name__ == '__main__':
     # set arguments
     parser = argparse.ArgumentParser(description='Train on FashionMNIST')
     parser.add_argument('--cfg', type=str, default='',help='configuration of training')
+    parser.add_argument("--wandb", type=str, required=True, help="API key for wandb.")
     args = parser.parse_args()
 
     main(args)

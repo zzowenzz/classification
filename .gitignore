@@ -12,3 +12,6 @@ log/*
 
 # trial notebook
 try.ipynb
+
+# wandb folder
+wandb/

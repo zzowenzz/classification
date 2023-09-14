@@ -13,3 +13,4 @@
 13. [x] use keep main() and train() in train.py
 14. [x] log to console and file 
 15. [x] train in DataParallel
+16. [x] sync training with wandb
