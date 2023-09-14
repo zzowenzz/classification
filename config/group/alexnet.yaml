@@ -1,0 +1,9 @@
+TRAIN:
+    BATCH_SIZE: 512
+    LR: 0.1
+    EPOCHS: 10
+    SNAPSHOT_BEST: "best.pth"
+    NUM_GPU: 1
+
+BACKBONE:
+    NAME: "AlexNet"

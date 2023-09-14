@@ -15,7 +15,7 @@ import datetime
 import argparse
 import wandb
 
-from model.lenet import Lenet
+from model.alexnet import AlexNet
 from utils.seed import set_seed
 from utils.device import get_device
 from utils.dataloader import get_dataloader
@@ -93,7 +93,7 @@ def main(args):
     logging.info(cfg)
 
     # create model
-    net = Lenet()
+    net = AlexNet()
     def init_weights(m):
         if type(m) == nn.Linear or type(m) == nn.Conv2d:
             nn.init.xavier_uniform_(m.weight)

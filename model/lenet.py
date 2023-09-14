@@ -27,7 +27,7 @@ class Lenet(nn.Module):
 
 # test for shape
 # lenet = Lenet()
-# report = torchinfo.summary(lenet, input_size=(1,1,28,28))
+# report = torchinfo.summary(lenet, input_size=(1,1,224,224))
 # summary_report = str(report)
 # with open("architecture.txt", "w") as f:
 #     f.write((summary_report))

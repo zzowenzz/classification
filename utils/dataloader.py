@@ -12,8 +12,9 @@ def get_transforms(augment=False):
     base_transforms = [transforms.ToTensor()]
     if augment:
         data_augmentation_transforms = [
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomRotation(10),
+            transforms.Resize((224, 224)),
+            # transforms.RandomHorizontalFlip(),
+            # transforms.RandomRotation(10),
             # Add more augmentation transforms if needed
 
         ]
@@ -25,8 +26,8 @@ def get_dataloader(batch_size):
     Load data
     '''
     trans = {
-        "train": get_transforms(),
-        "test": get_transforms(),
+        "train": get_transforms(augment=True),
+        "test": get_transforms(augment=True),
     }
     train = torchvision.datasets.FashionMNIST(root="./data", train=True, transform=trans["train"], download=True)
     train_sampler = DistributedSampler(train)# wrap train dataset with DistributedSampler
