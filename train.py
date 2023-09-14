@@ -15,7 +15,7 @@ import datetime
 import argparse
 import wandb
 
-from model import Lenet
+from model.lenet import Lenet
 from utils.seed import set_seed
 from utils.device import get_device
 from utils.dataloader import get_dataloader
@@ -76,9 +76,6 @@ def train(train_iter, test_iter, train_sampler, net, loss, optimizer, device):
     logging.info("\nFinish training")
 
 def main(args):
-    # set environment
-    # device = get_device(num_gpu=2)
-
     # create logger
     current_time = datetime.datetime.now().strftime('%m_%d_%H_%M')
     if not os.path.exists("./log/"+current_time):

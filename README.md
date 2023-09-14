@@ -14,3 +14,4 @@
 14. [x] log to console and file 
 15. [x] train in DataParallel
 16. [x] sync training with wandb
+17. [x] create model folder and separate each model
