@@ -15,7 +15,7 @@ import datetime
 import argparse
 import wandb
 
-from model.alexnet import AlexNet
+from model.vgg import vgg11, vgg13, vgg16, vgg19
 from utils.seed import set_seed
 from utils.device import get_device
 from utils.dataloader import get_dataloader
@@ -92,7 +92,7 @@ def main(args):
     log_from_gpu(cfg)
 
     # create model
-    net = AlexNet()
+    net = vgg11()
     def init_weights(m):
         if type(m) == nn.Linear or type(m) == nn.Conv2d:
             nn.init.xavier_uniform_(m.weight)

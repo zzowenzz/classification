@@ -15,8 +15,8 @@ def get_transforms(augment=False):
             transforms.Resize((224, 224)),
             # transforms.RandomHorizontalFlip(),
             # transforms.RandomRotation(10),
+            
             # Add more augmentation transforms if needed
-
         ]
         base_transforms = data_augmentation_transforms + base_transforms
     return transforms.Compose(base_transforms)
