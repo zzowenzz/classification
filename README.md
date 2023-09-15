@@ -1,3 +1,9 @@
+# Command to run the code
+```
+torchrun --nnode=[NUMBER OF NODES] --nproc_per_node=[NUMBER OF GPU PER NODE] --node_rank=[RANK OF THIS NODE] train.py --cfg [CONFIG FILE] --WANDB [WANDB KEY]
+```
+
+# TODO 
 1. [x] git init commit
 2. [x] use torchinfo to save architecture
 3. [x] build seed function
