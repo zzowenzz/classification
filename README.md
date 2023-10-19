@@ -1,4 +1,4 @@
-# Command to run the code
+# Train
 ```
 torchrun --nnode=[NUMBER OF NODES] --nproc_per_node=[NUMBER OF GPU PER NODE] --node_rank=[RANK OF THIS NODE] train.py --cfg [CONFIG FILE] --WANDB [WANDB KEY]
 ```
@@ -21,3 +21,4 @@ torchrun --nnode=[NUMBER OF NODES] --nproc_per_node=[NUMBER OF GPU PER NODE] --n
 15. [x] train in DataParallel
 16. [x] sync training with wandb
 17. [x] create model folder and separate each model
+18. [] Lenet, Alexnet, VGG
