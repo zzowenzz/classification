@@ -1,3 +1,4 @@
+# Pytorch official ddp demo
 import torch
 import torch.distributed as dist
 import torch.multiprocessing as mp # python mp tailored for pytorch
