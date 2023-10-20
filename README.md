@@ -26,4 +26,5 @@ torchrun --nnode=[NUMBER OF NODES] --nproc_per_node=[NUMBER OF GPU PER NODE] --n
 15. [x] train in DataParallel
 16. [x] sync training with wandb
 17. [x] create model folder and separate each model
-18. [] Lenet, Alexnet, VGG
+18. [x] Lenet, Alexnet, VGG
+19. [x] ViT 
