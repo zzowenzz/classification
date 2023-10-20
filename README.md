@@ -1,3 +1,8 @@
+# Install
+conda create -n cls python=3.10
+conda activate cls
+sh requirements.sh
+
 # Train
 ```
 torchrun --nnode=[NUMBER OF NODES] --nproc_per_node=[NUMBER OF GPU PER NODE] --node_rank=[RANK OF THIS NODE] train.py --cfg [CONFIG FILE] --WANDB [WANDB KEY]
