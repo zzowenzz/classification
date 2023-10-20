@@ -28,3 +28,8 @@ torchrun --nnode=[NUMBER OF NODES] --nproc_per_node=[NUMBER OF GPU PER NODE] --n
 17. [x] create model folder and separate each model
 18. [x] Lenet, Alexnet, VGG
 19. [x] ViT 
+
+
+# Reference
+1. https://zh.d2l.ai/index.html
+2. https://github.com/WZMIAOMIAO/deep-learning-for-image-processing/tree/master/pytorch_classification
