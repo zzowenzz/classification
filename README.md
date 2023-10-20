@@ -1,7 +1,9 @@
 # Install
+```
 conda create -n cls python=3.10
 conda activate cls
 sh requirements.sh
+```
 
 # Train
 ```
