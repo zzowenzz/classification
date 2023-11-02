@@ -15,7 +15,7 @@ import datetime
 import argparse
 import wandb
 
-from model.resnet import resnet18 # import model. You many need to change this line
+from model.resnext import resnext50_2x40d # import model. You many need to change this line
 from utils.seed import set_seed
 from utils.device import get_device
 from utils.dataloader import get_dataloader
@@ -92,7 +92,7 @@ def main(args):
     log_from_gpu(cfg)
 
     # create model
-    net = resnet18() # you may need to change this line, according to your imported model
+    net = resnext50_2x40d() # you may need to change this line, according to your imported model
     def init_weights(m):
         if type(m) == nn.Linear or type(m) == nn.Conv2d:
             nn.init.xavier_uniform_(m.weight)
