@@ -15,7 +15,7 @@ import datetime
 import argparse
 import wandb
 
-from model.vit import vit_base_patch16_224, vit_base_patch16_224_in21k, vit_base_patch32_224, vit_base_patch32_224_in21k, vit_large_patch16_224, vit_large_patch16_224_in21k, vit_large_patch32_224_in21k, vit_huge_patch14_224_in21k
+from model.alexnet import AlexNet
 from utils.seed import set_seed
 from utils.device import get_device
 from utils.dataloader import get_dataloader
@@ -92,7 +92,7 @@ def main(args):
     log_from_gpu(cfg)
 
     # create model
-    net = vit_base_patch16_224()
+    net = AlexNet()
     def init_weights(m):
         if type(m) == nn.Linear or type(m) == nn.Conv2d:
             nn.init.xavier_uniform_(m.weight)
